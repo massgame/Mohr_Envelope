@@ -2,7 +2,7 @@
 Visualize Mohr Circle and Failure Envelope 
 for Python 3.5.2
 
-Why I made this program?
+Why I made this code?
 -------------
 I had to write Geological Engineering Lab report about triaxial test, and this report requires drawing mohr circle and failure envelope. first one is an easy job, but next one isn't. we can do many things by Excel, but drawing common tangent line of mohr circles isn't in the thing. the choice was only two : First, Use Matlab. Second. Draw by hand. however, i didn't want to write report by hand and i didn't have matlab 
 
