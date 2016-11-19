@@ -23,12 +23,12 @@ If you don't know about Mohr's Circle, [read this][mohr]
 
 How to use
 -------------
-prior to the beginning, you have to install [numpy], [scipy], [matplotlib]
+Prior to the beginning, You have to install [numpy], [scipy], [matplotlib]
 [numpy]:http://www.numpy.org/
 [scipy]:https://www.scipy.org/
 [matplotlib]:http://matplotlib.org/
 
-in command prompt,type : python mohr.py filename.csv
+In command prompt or shell..., Type : python mohr.py filename.csv
 
 Input
 -------------
