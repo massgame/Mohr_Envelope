@@ -32,5 +32,15 @@ in command prompt,type : python mohr.py filename.csv
 
 Input
 -------------
-csv file
-![csv file](/example_Input.png)
+csv file format:
+>doesn't matter,σ3,σ1
+
+If you're using excel, write anything in column A, σ3 in column B, and σ1 in column C.
+
+Output
+-------------
+in Output.txt:
+ >Internal Friction Angle : 00.00° <br>
+ >Cohesion : 00.00 MPa <br>
+ >Failure Envelope equation : y=00.00x+00.00 <br>
+
