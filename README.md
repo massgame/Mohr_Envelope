@@ -33,3 +33,4 @@ in command prompt,type : python mohr.py filename.csv
 Input
 -------------
 csv file
+![csv file](/example_Input.png)
