@@ -18,7 +18,7 @@ If you don't know about Mohr's Circle, [read this][mohr]
 2. Use these point and Least-Square Method, make "Failure envelope candidate" Line. 
 3. Calculate averages of differents between distance from circle's center to "Failure envelope candidate"  and circle's radius.
 4. increase a(a: angle, 1~90) and repeat. Failure envelope candidate at angle a which have lowest averages of different is real failure envelope.
-5. draw Mohr circles and failure envelope.
+5. Draw Mohr circles and failure envelope.
 
 
 How to use
