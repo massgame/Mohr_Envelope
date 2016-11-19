@@ -44,5 +44,5 @@ in Output.txt:
  >Cohesion : 00.00 MPa <br>
  >Failure Envelope equation : y=00.00x+00.00 
 
-in Fig.png:
+in Fig.png:<br>
 ![graph](Fig.png)
