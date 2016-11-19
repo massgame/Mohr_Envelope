@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import csv
 import sys
-import os
 
 st1=[] #Minor stress
 st2=[] #Major stress
