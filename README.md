@@ -4,9 +4,9 @@ for Python 3.5.2
 
 Why I made this code?
 -------------
-I had to write Geological Engineering Lab report about triaxial test, and this report requires drawing mohr circle and failure envelope. first one is an easy job, but next one isn't. we can do many things by Excel, but drawing common tangent line of mohr circles isn't in the thing. the choice was only two : First, Use Matlab. Second. Draw by hand. however, i didn't want to write report by hand and i didn't have matlab 
+I had to write Geological Engineering Lab report about triaxial test, and this report requires drawing mohr circle and failure envelope. first one is an easy job, but next one isn't. we can do many things by Excel, but drawing common tangent line of mohr circles isn't in the thing. the choice was only two : First, Use Matlab. Second. Draw by hand. however, i didn't want to write report by hand and i didn't have matlab.
 
-Therefore, I used numpy and scipy and matplotlib and these worked fine. maybe my juniors would encounter this problem. so i wrote this program to help my juniors.
+Therefore, I used numpy and scipy and matplotlib and these worked fine. maybe my juniors would encounter this problem. so i wrote this code to help my juniors.
 
 As you can see, my major isn't Computer Science, so code would look like spagetti. but it works!
 
