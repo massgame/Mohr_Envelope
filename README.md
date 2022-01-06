@@ -28,21 +28,59 @@ Prior to the beginning, You have to install [numpy], [scipy], [matplotlib]
 [scipy]:https://www.scipy.org/
 [matplotlib]:http://matplotlib.org/
 
-In command prompt or shell..., Type : python mohr.py filename.csv
+Accepted data formats are either .csv files or Panda DataFrames
 
 Input
 -------------
-csv file format:
->doesn't matter,σ3,σ1
+### csv file format:
+>Test_name, σ3, σ1
 
-If you're using excel, write anything in column A, σ3 in column B, and σ1 in column C.
+If you're using excel, write TestID in column A, σ3 in column B, and σ1 in column C.
 
-Output
+### Panda DataFrames format:
+>Test_name, σ3, σ1
+
+Examples
 -------------
-in Output.txt:
- >Internal Friction Angle : 00.00° <br>
- >Cohesion : 00.00 MPa <br>
- >Failure Envelope equation : y=00.00x+00.00 
 
-in Fig.png:<br>
-![graph](Fig.png)
+
+```python
+import math
+import mohr
+import pandas as pd
+
+''' 
+LOAD DATA FROM CSV
+'''
+
+tn, sm, smj, cc, cr = mohr.read_csv(r'Absolute file path')
+
+''' 
+LOAD DATA AS DATAFRAME 
+'''
+
+# Dummy Data
+data = {'Name': ["TA", "TB", "TC"], "S3": [5, 10, 15], "S1": [25, 58, 110]}
+df = pd.DataFrame(data)
+# Load DataFrame
+tn, sm, smj, cc, cr = mohr.load_df(df)
+
+# Create Envelope
+env = mohr.getEnvelope()
+ag = env.getreallineParam(cc, cr)
+slp, icpt, mx, my = env.getlineParam(ag, cc, cr)
+
+# Get c-Phi information
+print("Cohesion\t%0.2f" % icpt)
+>>> Cohesion	-3.65
+print("Friction Angle\t%0.2f" % math.degrees(math.atan(slp)))
+>>> Friction Angle	52.28
+
+# Visualize Mohr Envelope 
+graph = mohr.Visualize()
+graph.drawCircle(cr, cc, smj)
+graph.drawEnvelope(mx, my, slp, icpt, sm, cc, ag)
+
+# Save Envelope
+graph.writepngFile()
+```
