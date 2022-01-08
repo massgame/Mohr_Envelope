@@ -52,7 +52,7 @@ Examples
 
 ```python
 import math
-import mohr
+import Mohr_Envelope as mohr
 import pandas as pd
 
 ''' 
