@@ -33,12 +33,18 @@ Accepted data formats are either .csv files or Panda DataFrames
 Input
 -------------
 ### csv file format:
+
 >Test_name, σ3, σ1
 
 If you're using excel, write TestID in column A, σ3 in column B, and σ1 in column C.
 
 ### Panda DataFrames format:
->Test_name, σ3, σ1
+```
+Columns:
+    Name: Test_Name, dtype=object, nullable: False
+    Name: σ3, dtype=int64, nullable: False
+    Name: σ1, dtype=int64, nullable: False
+```
 
 Examples
 -------------
@@ -59,8 +65,8 @@ tn, sm, smj, cc, cr = mohr.read_csv(r'Absolute file path')
 LOAD DATA AS DATAFRAME 
 '''
 
-# Dummy Data
-data = {'Name': ["TA", "TB", "TC"], "S3": [5, 10, 15], "S1": [25, 58, 110]}
+# Data from testing Shale rock
+data = {'Name': ["TA", "TB", "TC"], "S3": [5, 10, 15], "S1": [84.5, 86.3, 111.0]}
 df = pd.DataFrame(data)
 # Load DataFrame
 tn, sm, smj, cc, cr = mohr.load_df(df)
@@ -72,9 +78,9 @@ slp, icpt, mx, my = env.getlineParam(ag, cc, cr)
 
 # Get c-Phi information
 print("Cohesion\t%0.2f" % icpt)
->>> Cohesion	-3.65
+> Cohesion	18.69
 print("Friction Angle\t%0.2f" % math.degrees(math.atan(slp)))
->>> Friction Angle	52.28
+> Friction Angle	29.68
 
 # Visualize Mohr Envelope 
 graph = mohr.Visualize()
@@ -82,5 +88,5 @@ graph.drawCircle(cr, cc, smj)
 graph.drawEnvelope(mx, my, slp, icpt, sm, cc, ag)
 
 # Save Envelope
-graph.writepngFile()
+graph.writepngFile(r'Absolute file path to save')
 ```

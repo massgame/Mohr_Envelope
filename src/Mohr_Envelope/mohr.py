@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import csv
 
+# TODO
+#  Sort readings by confining pressure for csv files
 
 class Read:
     def __init__(self, promptFileName):
@@ -36,11 +38,15 @@ class ReadDF:
         self.dataframe[3] = (self.dataframe[2] + self.dataframe[1]) / 2  # center of Mohr Circle
         self.dataframe[4] = (self.dataframe[2] - self.dataframe[1]) / 2  # radius of Mohr Circle
 
-        return self.dataframe[0].tolist(), \
+        self.dataframe = self.dataframe.sort_values(by=[1])
+
+        test_name, stress_Minor, stress_Major, circleCenter, circleRadius = self.dataframe[0].tolist(), \
                self.dataframe[1].tolist(), \
                self.dataframe[2].tolist(), \
                self.dataframe[3].tolist(), \
-               self.dataframe[4].tolist(),
+               self.dataframe[4].tolist()
+
+        return test_name, stress_Minor, stress_Major, circleCenter, circleRadius
 
 
 class getEnvelope:
@@ -58,7 +64,7 @@ class getEnvelope:
 
     def getreallineParam(self, _center, _radius):
         Avgs = []  # save average differences
-        # f = open("test.txt", "w")
+
         for k in range(len(self.scaleX)):
             _slope, _intercept, _mx, _my = self.getlineParam(self.scaleX[k], _center, _radius)
             Avgs.append(np.mean(
@@ -75,12 +81,32 @@ class Visualize:
         # self.ax.axvline(0, color='black')
         self.ax.set(xlabel=r'Normal Stress (MPa)', ylabel=r'Shear Stress (MPa)')
 
-    def drawCircle(self, _radius_, _center_, _stress_Major):
-        self.ax.set_xlim((-10, _stress_Major[-1] + 200))
-        self.ax.set_ylim(0, _radius_[-1] + 200)
+    def drawCircle(self, _radius_, _center_, _stress_Major, _test_name=None):
+        """
+
+        :param _radius_:
+        :type _radius_: list[float]
+        :param _center_:
+        :type _center_: list[float]
+        :param _stress_Major:
+        :type _stress_Major: list[float]
+        :param _test_name:
+        :type _test_name: None or list[str]
+
+        :return:
+        """
+        self.ax.set_xlim(0, _stress_Major[-1] * 1.25)
+        self.ax.set_ylim(0, _radius_[-1] * 1.25)
+        # Patch Vs. ARTIST
         for j in range(len(_stress_Major)):
-            self.ax.add_artist(plt.Circle((_center_[j], 0), _radius_[j], edgecolor='red', label='Mohr Circle',
+            if _test_name:
+                self.ax.add_patch(plt.Circle((_center_[j], 0), _radius_[j], edgecolor='red', ls='--', label=_test_name[j],
                                           fill=False))  # draw mohr circle
+            else:
+                self.ax.add_patch(plt.Circle((_center_[j], 0), _radius_[j], edgecolor='red', ls='--',
+                                          fill=False))  # draw mohr circle
+
+        self.ax.legend(fontsize=10)
 
     def drawEnvelope(self, pointX, pointY, _slope, _intercept, _stress_Minor_, center, _degr):
         # Draw Envelope
