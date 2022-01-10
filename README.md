@@ -12,21 +12,20 @@ As you can see, my major isn't Computer Science, so code would look like spagett
 
 How it works?
 -------------
-If you don't know about Mohr's Circle, [read this][mohr]
-[mohr]:https://en.wikipedia.org/wiki/Mohr's_circle
+If you don't know about Mohr's Circle [read this](https://en.wikipedia.org/wiki/Mohr's_circle)
 1. Draw Mohr circles in various σ1(major principle stress) and σ3(minor principle stress) condition. and determine point which meets circle's tangent line on each mohr circles. these point is determined by (x1-rcos(a),rsin(a)).
 2. Use these point and Least-Square Method, make "Failure envelope candidate" Line. 
 3. Calculate averages of differents between distance from circle's center to "Failure envelope candidate"  and circle's radius.
-4. increase a(a: angle, 1~90) and repeat. Failure envelope candidate at angle a which have lowest averages of different is real failure envelope.
+4. Increase a(a: angle, 1~90) and repeat. Failure envelope candidate at angle a which have lowest averages of different is real failure envelope.
 5. Draw Mohr circles and failure envelope.
 
 
 How to use
 -------------
-Prior to the beginning, You have to install [numpy], [scipy], [matplotlib]
-[numpy]:http://www.numpy.org/
-[scipy]:https://www.scipy.org/
-[matplotlib]:http://matplotlib.org/
+Prior to the beginning, You have to install:
+* [numpy](http://www.numpy.org/)
+* [scipy](https://www.scipy.org/)
+* [matplotlib](http://matplotlib.org/)
 
 Accepted data formats are either .csv files or Panda DataFrames
 
@@ -34,11 +33,16 @@ Input
 -------------
 ### csv file format:
 
->Test_name, σ3, σ1
-
 If you're using excel, write TestID in column A, σ3 in column B, and σ1 in column C.
 
-### Panda DataFrames format:
+```
+> Test_name, σ3, σ1
+```
+
+### Pandas DataFrame format:
+
+The column header names do not really matter.
+
 ```
 Columns:
     Name: Test_Name, dtype=object, nullable: False
