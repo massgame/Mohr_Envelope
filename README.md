@@ -1,28 +1,28 @@
 # Mohr_Envelope
-Visualize Mohr Circle and Failure Envelope 
-for Python 3.5.2
+Visualize Mohr Circle and Failure Envelope using triaxial test data.
+Compatible with Python 3.5.2+
 
 Why I made this code?
 -------------
-I had to write Geological Engineering Lab report about triaxial test, and this report requires drawing mohr circle and failure envelope. first one is an easy job, but next one isn't. we can do many things by Excel, but drawing common tangent line of mohr circles isn't in the thing. the choice was only two : First, Use Matlab. Second. Draw by hand. however, i didn't want to write report by hand and i didn't have matlab.
+This work was motivated by triaxial test for a Geological Engineering Laboratory report. The report requires drawing mohr circle and failure envelope. A major drawback of using Excel is that it is not possible to draw a common tangent line of mohr circles isn't in the thing. Manual and Matlab are two available options, however, I didn't want to manual draw the circles and I didn't have Matlab.
 
-Therefore, I used numpy and scipy and matplotlib and these worked fine. maybe my juniors would encounter this problem. so i wrote this code to help my juniors.
+The solution was to revert to Python. Using the python packages numpy and scipy and matplotlib, I was able to obtain a working version of this. And I decided to write this script to help the juniors.
 
-As you can see, my major isn't Computer Science, so code would look like spagetti. but it works!
+The script is not exhaustive, as I am no Computer Science major, but it does the job. And works!!
 
 How it works?
 -------------
 If you don't know about Mohr's Circle [read this](https://en.wikipedia.org/wiki/Mohr's_circle)
 1. Draw Mohr circles in various σ1(major principle stress) and σ3(minor principle stress) condition. and determine point which meets circle's tangent line on each mohr circles. these point is determined by (x1-rcos(a),rsin(a)).
 2. Use these point and Least-Square Method, make "Failure envelope candidate" Line. 
-3. Calculate averages of differents between distance from circle's center to "Failure envelope candidate"  and circle's radius.
-4. Increase a(a: angle, 1~90) and repeat. Failure envelope candidate at angle a which have lowest averages of different is real failure envelope.
+3. Calculate averages of differences between distance from circle's center to "Failure envelope candidate" and circle's radius.
+4. Increase a(a: angle, 1~90) and repeat. Failure envelope candidate at angle which have lowest average of the differences is real failure envelope.
 5. Draw Mohr circles and failure envelope.
 
 
 How to use
 -------------
-Prior to the beginning, You have to install:
+Prior to the beginning, the following packages need to be installed:
 * [numpy](http://www.numpy.org/)
 * [scipy](https://www.scipy.org/)
 * [matplotlib](http://matplotlib.org/)
@@ -33,7 +33,7 @@ Input
 -------------
 ### csv file format:
 
-If you're using excel, write TestID in column A, σ3 in column B, and σ1 in column C.
+If you're using excel, write TestID in column A, σ3 in column B, and σ1 in column C. The csv **should not** contain a header. The script will ignore any columns after the third. 
 
 ```
 > Test_name, σ3, σ1
@@ -54,7 +54,7 @@ Examples
 -------------
 
 
-```python
+```python3
 import math
 import Mohr_Envelope as mohr
 import pandas as pd
@@ -86,11 +86,38 @@ print("Cohesion\t%0.2f" % icpt)
 print("Friction Angle\t%0.2f" % math.degrees(math.atan(slp)))
 > Friction Angle	29.68
 
-# Visualize Mohr Envelope 
+''' 
+VISUALIZATION  
+'''
+
+# Standard Visualize Mohr Envelope 
 graph = mohr.Visualize()
 graph.drawCircle(cr, cc, smj)
 graph.drawEnvelope(mx, my, slp, icpt, sm, cc, ag)
 
 # Save Envelope
-graph.writepngFile(r'Absolute file path to save')
+graph.writeFile(r'Absolute file path to save')
+
+####
+
+# Advanced Visualize Mohr Envelope
+adv_graph = mohr.Visualize()
+
+# You can use **plt_kwargs and have control over the plot of the Mohr circle.
+advanced_plot = adv_graph.plot_Mohr_Circle(cr, cc, smj, edgecolor='black', ls='-')
+adv_graph.plot_Mohr_Envelope(mx, my, slp, icpt, sm, cc, ag, color='r')
+
+# Control over the Axes Canvas
+advanced_plot.axis('scaled')
+advanced_plot.set_title("Mohr Circle")
+advanced_plot.set_xlim(0, max(smj) * 1.25)
+advanced_plot.set_ylim(0, max(cr) * 1.25)
+advanced_plot.set(xlabel=r'Normal Stress (MPa)', ylabel=r'Shear Stress (MPa)')
+
+# Show Legend
+advanced_plot.legend()
+
+# Show and Save figure
+plt.savefig('/home/aly/Desktop/mohr.png')
+plt.show()
 ```

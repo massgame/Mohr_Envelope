@@ -111,15 +111,112 @@ class getEnvelope:
         return round(self.scaleX[Avgs.index((min(Avgs)))], 2)
 
 
+class Visualize_User_Defined:
+    def __init__(self, **kwargs):
+        self.fig, self.ax = plt.subplots()
+
+    def plot_Mohr_Circle(self, _radius_, _center_, _stress_Major, infill=False, _test_name=None, ax=None, **plt_kwargs):
+        """
+        Draw the actual Mohr Circle domain.
+
+        :param _radius_: Circle radius
+        :type _radius_: list[float]
+        :param _center_: Circle centers
+        :type _center_: list[float]
+        :param _stress_Major: Major Stress
+        :type _stress_Major: list[float]
+        :param infill: fill/unfill the MC.
+        :type infill: bool
+        :param _test_name: Name of the Mohr Circle being drawn
+        :type _test_name: None or list[str]
+        :param ax: Matplotlib Axis
+        :type ax: matplotlib
+        :param plt_kwargs: `~matplotlib.Modules` submodules
+        :type plt_kwargs:
+
+        :return: Matplotlib AxesSubplots
+        :rtype: Matplotlib Axis
+
+        :Example:
+        # Load CSV file
+        tn, sm, smj, cc, cr = mohr.read_csv(r'./mohr_trial.csv')
+
+        # Load Class (Customisable)
+        graph = mohr.Visualize_User_Defined()
+        # Plot using kwargs from matplotlib
+        dfplot = graph.plot_Mohr_Circle(cr, cc, smj, edgecolor='black', ls='-')
+        # Use of dfplot as Axes
+        dfplot.set_title("Mohr Circle")
+        dfplot.set_xlim(0, max(smj) * 1.25)
+        dfplot.set_ylim(0, max(cr) * 1.25)
+        # Show and Save plot
+        plt.show()
+        plt.save_fig(r'Absolute file path to save')
+
+        """
+
+        for j in range(len(_stress_Major)):
+            if _test_name:
+                self.ax.add_patch(plt.Circle((_center_[j], 0), _radius_[j], label=_test_name[j],
+                                          fill=infill, **plt_kwargs))  # draw mohr circle
+            else:
+                self.ax.add_patch(plt.Circle((_center_[j], 0), _radius_[j],
+                                          fill=infill, **plt_kwargs))  # draw mohr circle
+
+        return self.ax
+
+    def plot_Mohr_Envelope(self, pointX, pointY, _slope, _intercept, _stress_Minor_, center, _degr, ax=None, **plt_kwargs):
+        """
+        Plot the failure envelope.
+
+        :param pointX: Point on Envelope
+        :type pointX: float
+        :param pointY: Point on Envelope
+        :type pointY: float
+        :param _slope: Slope of 'failure envelope'
+        :type _slope: float
+        :param _intercept: Intercept of 'failure envelope'
+        :type _intercept: float
+        :param _stress_Minor_: No. of tests loaded
+        :type _stress_Minor_: float
+        :param center: Circle centers
+        :type center: list[float]:
+        :param _degr: Angle of constructed tangent
+        :type _degr: float
+        :param ax: Matplotlib Axis
+        :type ax: matplotlib
+        :param plt_kwargs: `~matplotlib.Modules` submodules
+        :type plt_kwargs:
+
+        :return: matplotlib.Axes
+        """
+
+        # Draw Envelope
+        envelope = self.ax.plot(pointX + [1000], [(pointX[i] * _slope) + _intercept for i in range(len(pointX))] + [
+            1000 * _slope + _intercept], label='Failure Envelope', **plt_kwargs)
+        # Draw line radius for construction
+        lineRadius = self.ax.plot([pointX[-1], center[-1]], [pointY[-1], 0],
+                                  label="Radius of Test {0} Mohr Circle".format(len(_stress_Minor_)))
+        self.ax.text(center[-1], 0, '%.2f° ' % _degr, fontsize=12)  # theta angle
+        # self.ax.legend(fontsize=10)
+        if _intercept < 0:
+            self.ax.text(pointX[-1], pointY[-1], r'$y=%.2fx%.2f$' % (_slope, _intercept),
+                         fontsize=12)  # equation of failure envelope
+        else:
+            self.ax.text(pointX[-1], pointY[-1], r'$y=%.2fx+%.2f$' % (_slope, _intercept), fontsize=12)
+
+        return self.ax
+
+
 class Visualize:
-    def __init__(self):
+    def __init__(self,):
         self.fig, self.ax = plt.subplots()
         self.ax.axis('scaled')
         self.ax.set(xlabel=r'Normal Stress (MPa)', ylabel=r'Shear Stress (MPa)')
 
     def drawCircle(self, _radius_, _center_, _stress_Major, _test_name=None):
         """
-        Draw the actual Mohr Circle domain.
+        Simple plot of the Mohr Circles
 
         :param _radius_: Circle radius
         :type _radius_: list[float]
@@ -182,7 +279,7 @@ class Visualize:
         else:
             self.ax.text(pointX[-1], pointY[-1], r'$y=%.2fx+%.2f$' % (_slope, _intercept), fontsize=12)
 
-    def writepngFile(self, savefilename):
+    def writeFile(self, savefilename):
         """
         Save the results of the Mohr Circle and Envelope.
 
@@ -191,6 +288,7 @@ class Visualize:
 
         :return: Saves the image to the desired path
         """
+
         self.fig.show()
         self.fig.savefig(savefilename)
 
