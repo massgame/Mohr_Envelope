@@ -18,6 +18,7 @@ except AssertionError:
 from .mohr import (
     Read,
     ReadDF,
+    Visualize_User_Defined,
     Visualize,
     getEnvelope,
 )
